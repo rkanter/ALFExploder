@@ -13,6 +13,11 @@ Build
 ./build.sh [-Dhadoop.version=<version>]
 ````
 
+The ``hadoop.version`` can be any Hadoop version (CDH or Apache) that supports Compacted Aggregated Log Files
+([YARN-2942](https://issues.apache.org/jira/browse/YARN-2942)).
+
+While that's required for compiling, it should run against aggregated log files created by any version of Hadoop.
+
 Run
 ---
 ````
@@ -100,6 +105,5 @@ $ ./run.sh -applogdir ~/Downloads/diagnostics_agg/job_1422655762637_0002/aggrega
 	--> /tmp/agg/container_1422655762637_0002_01_000001/stderr
 	--> /tmp/agg/container_1422655762637_0002_01_000001/stdout
 	--> /tmp/agg/container_1422655762637_0002_01_000001/syslog
-
 ...
 ````
