@@ -1,4 +1,4 @@
-package com.cloudera.rkanter.calfexploder;
+package com.cloudera.rkanter.alfexploder;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -15,22 +15,20 @@ import org.apache.hadoop.fs.LocatedFileStatus;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.hadoop.util.Tool;
-import org.apache.hadoop.yarn.api.records.ContainerId;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.logaggregation.AggregatedLogFormat;
-import org.apache.hadoop.yarn.logaggregation.CompactedAggregatedLogFormat;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class CALFExploder extends Configured implements Tool {
+public class ALFExploder extends Configured implements Tool {
 
     private static final String APP_LOG_DIR_OPTION = "applogdir";
     private static final String OUTPUT_DIR_OPTION = "outputdir";
 
     public static void main(String args[]) throws Exception {
         Configuration conf = new YarnConfiguration();
-        CALFExploder calf = new CALFExploder();
+        ALFExploder calf = new ALFExploder();
         calf.setConf(conf);
         int exitCode = calf.run(args);
         System.exit(exitCode);
@@ -87,13 +85,6 @@ public class CALFExploder extends Configured implements Tool {
                     explodeAggregatedLog(logFile.getPath(), outputDir, odFs);
                 }
             }
-
-            // Compacted logs
-            Path indexFile = new Path(logDir, logDir.getName() + ".index");
-            Path compactedFile = new Path(logDir, logDir.getName());
-            if (ldFs.exists(indexFile) && ldFs.exists(compactedFile)) {
-                explodeCompactedAggregatedLog(indexFile, compactedFile, outputDir, odFs);
-            }
         } finally {
             if (ldFs != null) {
                 ldFs.close();
@@ -135,28 +126,6 @@ public class CALFExploder extends Configured implements Tool {
         }
     }
 
-    private void explodeCompactedAggregatedLog(Path indexFile, Path compactedFile, Path outputDir, FileSystem odFs) {
-        CompactedAggregatedLogFormat.LogReader reader = null;
-        try {
-            System.out.println(compactedFile.toUri().getPath());
-            reader = new CompactedAggregatedLogFormat.LogReader(getConf(), indexFile, compactedFile);
-            for (String containerId : reader.getContainerIds()) {
-                Path containerPath = new Path(outputDir, containerId);
-                if (!odFs.exists(containerPath)) {
-                    odFs.mkdirs(containerPath);
-                }
-                AggregatedLogFormat.ContainerLogsReader logReader = reader.getContainerLogsReader(ContainerId.fromString(containerId));
-                writeContainerLog(logReader, containerPath, odFs);
-            }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }finally {
-            if (reader != null) {
-                reader.close();
-            }
-        }
-    }
-
     private void writeContainerLog(AggregatedLogFormat.ContainerLogsReader logReader, Path containerPath, FileSystem odFs)
             throws IOException {
         while (logReader.nextLog() != null) {
@@ -188,7 +157,7 @@ public class CALFExploder extends Configured implements Tool {
     }
 
     private void printHelpMessage(Options options) {
-        System.out.println("Takes an application log directory and explodes any aggregated and compacted aggregated log files into "
+        System.out.println("Takes an application log directory and explodes any aggregated log files into "
                 + "their original separate log files");
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("./run.sh", options, true);
