@@ -34,7 +34,6 @@ public class ALFExploder extends Configured implements Tool {
         System.exit(exitCode);
     }
 
-    @Override
     public int run(String[] args) throws Exception {
         Options opts = new Options();
         Option logDirOption = new Option(APP_LOG_DIR_OPTION, true, "Application Log Dir (local or remote)");
