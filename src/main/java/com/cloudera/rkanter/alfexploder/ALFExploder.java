@@ -124,13 +124,23 @@ public class ALFExploder extends Configured implements Tool {
             try {
                 AggregatedLogFormat.LogKey key = new AggregatedLogFormat.LogKey();
                 valueStream = reader.next(key);
-                if (key.toString() != null && valueStream != null) {
-                    Path containerPath = new Path(outputDir, key.toString());
-                    if (!odFs.exists(containerPath)) {
-                        odFs.mkdirs(containerPath);
+                while (key.toString() != null && valueStream != null) {
+                    try {
+                        Path containerPath = new Path(outputDir, key.toString());
+                        if (!odFs.exists(containerPath)) {
+                            odFs.mkdirs(containerPath);
+                        }
+                        System.out.println("    --> " + containerPath.toUri().getPath());
+                        AggregatedLogFormat.ContainerLogsReader logReader = new AggregatedLogFormat.ContainerLogsReader(valueStream);
+                        writeContainerLog(logReader, containerPath, odFs);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    } finally {
+                        if (valueStream != null) {
+                            valueStream.close();
+                        }
                     }
-                    AggregatedLogFormat.ContainerLogsReader logReader = new AggregatedLogFormat.ContainerLogsReader(valueStream);
-                    writeContainerLog(logReader, containerPath, odFs);
+                    valueStream = reader.next(key);
                 }
             } finally {
                 if (valueStream != null) {
@@ -153,7 +163,7 @@ public class ALFExploder extends Configured implements Tool {
             Path logTypePath = new Path(containerPath, logType);
             FSDataOutputStream logOut = null;
             try {
-                System.out.println("\t--> " + logTypePath.toUri().getPath());
+                System.out.println("        - " + logTypePath.getName());
                 logOut = odFs.create(logTypePath);
                 long fileLength = logReader.getCurrentLogLength();
                 byte[] buf = new byte[65535];

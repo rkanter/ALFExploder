@@ -33,18 +33,41 @@ configuration is available on the classpath.
 Sample Output
 =============
 ````
-$ ./run.sh -applogdir ~/Downloads/diagnostics_agg/job_1422655762637_0002/aggregated_logs/application_1422655762637_0002 -outputdir /tmp/agg
-/Users/rkanter/Downloads/diagnostics/job_1422655762637_0002/aggregated_logs/application_1422655762637_0002/rkanter-z-1.ent.cloudera.com_8041
-	--> /tmp/agg/container_1422655762637_0002_01_000013/stderr
-	--> /tmp/agg/container_1422655762637_0002_01_000013/stdout
-	--> /tmp/agg/container_1422655762637_0002_01_000013/syslog
-/Users/rkanter/Downloads/diagnostics/job_1422655762637_0002/aggregated_logs/application_1422655762637_0002/rkanter-z-2.ent.cloudera.com_8041
-	--> /tmp/agg/container_1422655762637_0002_01_000035/stderr
-	--> /tmp/agg/container_1422655762637_0002_01_000035/stdout
-	--> /tmp/agg/container_1422655762637_0002_01_000035/syslog
-/Users/rkanter/Downloads/diagnostics/job_1422655762637_0002/aggregated_logs/application_1422655762637_0002/rkanter-z-3.ent.cloudera.com_8041
-	--> /tmp/agg/container_1422655762637_0002_01_000020/stderr
-	--> /tmp/agg/container_1422655762637_0002_01_000020/stdout
-	--> /tmp/agg/container_1422655762637_0002_01_000020/syslog
-...
+$ ./run.sh -applogdir ~/Downloads/application_1473425415287_0008 -outputdir /tmp/agg
+/Users/rkanter/Downloads/application_1473425415287_0008/rkanter-z-1.gce.cloudera.com_8041
+    --> /tmp/agg/container_1473425415287_0008_01_000001
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000004
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000008
+        - stderr
+        - stdout
+        - syslog
+        - syslog.shuffle
+/Users/rkanter/Downloads/application_1473425415287_0008/rkanter-z-2.gce.cloudera.com_8041
+    --> /tmp/agg/container_1473425415287_0008_01_000002
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000006
+        - stderr
+        - stdout
+        - syslog
+/Users/rkanter/Downloads/application_1473425415287_0008/rkanter-z-3.gce.cloudera.com_8041
+    --> /tmp/agg/container_1473425415287_0008_01_000003
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000005
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000007
+        - stderr
+        - stdout
+        - syslog
 ````
