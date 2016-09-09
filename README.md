@@ -1,7 +1,7 @@
 Aggregated Log File Exploder
 ============================
 
-This tool will takes an application log directory and explode any YARN application aggregated log files
+This tool will take an application log directory and explode any YARN application aggregated log files
 into their original separate log files.
 
 This is useful if you want to do any additional parsing on the aggregated log files of a YARN application
