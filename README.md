@@ -13,7 +13,7 @@ Build
 ./build.sh [-Dhadoop.version=<version>]
 ````
 
-The ``hadoop.version`` can be any Hadoop version (CDH or Apache).
+The ``hadoop.version`` can be any Hadoop version (CDH or Apache).  It defaults to the latest released version of CDH.
 
 While that's required for compiling, it should run against aggregated log files created by any version of Hadoop.
 
