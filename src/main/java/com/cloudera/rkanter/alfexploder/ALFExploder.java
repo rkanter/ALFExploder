@@ -9,8 +9,11 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.AbstractFileSystem;
 import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.HarFs;
 import org.apache.hadoop.fs.LocatedFileStatus;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.RemoteIterator;
@@ -76,12 +79,16 @@ public class ALFExploder extends Configured implements Tool {
             odFs.mkdirs(outputDir);
 
             // Aggregated logs
-            RemoteIterator<LocatedFileStatus> logFiles = ldFs.listFiles(logDir, false);
+            RemoteIterator<LocatedFileStatus> logFiles = ldFs.listLocatedStatus(logDir);
             while (logFiles.hasNext()) {
                 LocatedFileStatus logFile = logFiles.next();
-                // Assume all files that are not the Application ID are aggregated logs
-                if (!logFile.getPath().getName().startsWith(logDir.getName())) {
-                    explodeAggregatedLog(logFile.getPath(), outputDir, odFs);
+                // Exclude all invisible files (e.g. ".DS_Store")
+                if (!logFile.getPath().getName().startsWith(".")) {
+                    if (logFile.getPath().getName().endsWith(".har")) {
+                        explodeHARAggregatedLog(logFile.getPath(), outputDir, odFs);
+                    } else {
+                        explodeAggregatedLog(logFile.getPath(), outputDir, odFs);
+                    }
                 }
             }
         } finally {
@@ -91,6 +98,20 @@ public class ALFExploder extends Configured implements Tool {
             if (odFs != null) {
                 odFs.close();
             }
+        }
+    }
+
+    private void explodeHARAggregatedLog(Path logFile, Path outputDir, FileSystem odFs) {
+        Path harFile = new Path("har:///" + logFile.toUri().getRawPath());
+        AbstractFileSystem harFs = null;
+        try {
+            harFs = HarFs.get(harFile.toUri(), getConf());
+            RemoteIterator<FileStatus> it = harFs.listStatusIterator(harFile);
+            while (it.hasNext()) {
+                explodeAggregatedLog(it.next().getPath(), outputDir, odFs);
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 

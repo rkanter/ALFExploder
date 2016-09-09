@@ -7,6 +7,9 @@ into their original separate log files.
 This is useful if you want to do any additional parsing on the aggregated log files of a YARN application
 with tools that work better with plain text.
 
+It also supports HAR archived aggregated logs.
+http://hadoop.apache.org/docs/current/hadoop-archive-logs/HadoopArchiveLogs.html
+
 Build
 -----
 ````
