@@ -12,10 +12,10 @@ It also supports [HAR archived aggregated logs](http://hadoop.apache.org/docs/cu
 Build
 -----
 ````
-./build.sh [-Dhadoop.version=<version>]
+./build.sh [-Dhadoop.version=<version>] [passthrough-maven-opts]
 ````
 
-The ``hadoop.version`` can be any Hadoop version (CDH or Apache).  It defaults to the latest released version of CDH.
+The ``hadoop.version`` can be any Hadoop version (CDH or Apache).  It defaults to CDH 5.9.0.
 
 While that's required for compiling, it should run against aggregated log files created by any version of Hadoop.
 
