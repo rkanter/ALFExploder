@@ -23,7 +23,7 @@ Run
 ---
 ````
 ./run.sh -applogdir <arg> -outputdir <arg>
-```
+````
 
 The appplogdir and outputdir can be on any FileSystem that implements the Hadoop FileSystem class, as long as the necessary
 configuration is available on the classpath.
