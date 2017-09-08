@@ -1,4 +1,4 @@
-package com.cloudera.rkanter.alfexploder;
+package com.github.rkanter.alfexploder;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
