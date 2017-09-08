@@ -17,7 +17,7 @@ Build
 
 The ``hadoop.version`` can be any Hadoop version (CDH or Apache).  It defaults to CDH 5.9.0.
 
-While that's required for compiling, it should run against aggregated log files created by any version of Hadoop.
+While a specific version is required for compiling, it should be able to process aggregated log files created by any version of Hadoop.
 
 Run
 ---
