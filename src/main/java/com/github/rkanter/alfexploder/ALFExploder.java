@@ -23,6 +23,7 @@ import org.apache.hadoop.yarn.logaggregation.AggregatedLogFormat;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.URI;
 
 public class ALFExploder extends Configured implements Tool {
 
@@ -102,7 +103,12 @@ public class ALFExploder extends Configured implements Tool {
     }
 
     private void explodeHARAggregatedLog(Path logFile, Path outputDir, FileSystem odFs) {
-        Path harFile = new Path("har:///" + logFile.toUri().getRawPath());
+        URI logFileUri = logFile.toUri();
+        // HAR files on the local filesystem have a path with this format: har:///<path>.har/<file>
+        // HAR files on remote filesystems have a path with this format: har://<scheme>-<host>:<port>/<path>.har/<file>
+        Path harFile = logFileUri.getScheme().equals("file") ?
+            new Path("har:///" + logFile.toUri().getRawPath()) :
+            new Path("har://" + logFile.toUri().getScheme() + "-" + logFile.toUri().getHost() + ":" + logFile.toUri().getPort() + logFile.toUri().getRawPath());
         AbstractFileSystem harFs = null;
         try {
             harFs = HarFs.get(harFile.toUri(), getConf());
