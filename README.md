@@ -39,6 +39,7 @@ Example Usage
 It's recommended to follow Examples 1 and 2, which simply point the tool at an Aggregated Log directory.  This will work for both
 "plain" Aggregated Log files as well as HAR files.  
 Only follow Examples 3 and 4 if you have a specific reason to and know what you're doing.
+<br/>
 
 **Example 1:** Using an Application's Aggregated Log directory, from the local disk
 ````
