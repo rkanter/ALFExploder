@@ -25,12 +25,13 @@ Run
 ./run.sh -applogdir <arg> -outputdir <arg>
 ````
 
-The appplogdir and outputdir can be on any FileSystem that implements the Hadoop FileSystem class, as long as the necessary
-configuration is available on the classpath.
+The appplogdir and outputdir can be on any FileSystem that implements the Hadoop FileSystem class, as long as the necessary jars, and possibly
+configuration, are available on the classpath.
 
 
-Sample Output
+Example Output
 =============
+**Example 1:** An Aggregated Application Log directory, from the local disk:
 ````
 $ ./run.sh -applogdir ~/Downloads/application_1473425415287_0008 -outputdir /tmp/agg
 /Users/rkanter/Downloads/application_1473425415287_0008/rkanter-z-1.gce.cloudera.com_8041
@@ -57,6 +58,48 @@ $ ./run.sh -applogdir ~/Downloads/application_1473425415287_0008 -outputdir /tmp
         - stdout
         - syslog
 /Users/rkanter/Downloads/application_1473425415287_0008/rkanter-z-3.gce.cloudera.com_8041
+    --> /tmp/agg/container_1473425415287_0008_01_000003
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000005
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000007
+        - stderr
+        - stdout
+        - syslog
+````
+<br/>
+
+**Example 2:** An Aggregated Application Log directory, from HDFS:
+````
+$ ./run.sh -applogdir hdfs://nightly-unsecure-1.vpc.cloudera.com:8020/tmp/logs/systest/logs/application_1473425415287_0008 -outputdir /tmp/agg
+/tmp/logs/systest/logs/application_1473425415287_0008/rkanter-z-1.gce.cloudera.com_8041
+    --> /tmp/agg/container_1473425415287_0008_01_000001
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000004
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000008
+        - stderr
+        - stdout
+        - syslog
+        - syslog.shuffle
+/tmp/logs/systest/logs/application_1473425415287_0008/rkanter-z-2.gce.cloudera.com_8041
+    --> /tmp/agg/container_1473425415287_0008_01_000002
+        - stderr
+        - stdout
+        - syslog
+    --> /tmp/agg/container_1473425415287_0008_01_000006
+        - stderr
+        - stdout
+        - syslog
+/tmp/logs/systest/logs/application_1473425415287_0008/rkanter-z-3.gce.cloudera.com_8041
     --> /tmp/agg/container_1473425415287_0008_01_000003
         - stderr
         - stdout
