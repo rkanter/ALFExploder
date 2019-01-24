@@ -8,6 +8,8 @@
 
     <properties>
         <hadoop.version>2.6.0-cdh5.9.0</hadoop.version>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
     </properties>
 
     <dependencies>
